@@ -9,17 +9,28 @@ const DetailPage = (props) => {
 
   let location = useLocation();
   const { state } = location;
-  console.log(state);
+  // console.log(state);
 
-  const [pokeDetails, setpokeDetails] = useState(null);
+  const [pokeDetails, setpokeDetails] = useState({
+    pokeInfo: null,
+    pokeBio: "Poke bio",
+  });
 
   useEffect(() => {
-    async function getDetails() {
-      console.log(state.url);
-      const pokeResponse = await axios.get(state.url);
-      console.log(pokeResponse.data);
-      setpokeDetails(pokeResponse.data);
-    }
+    const getDetails = async () => {
+      try {
+        // console.log(state.url);
+        const pokeResponse = await axios.get(state.url);
+        const dexRes = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon-species/${pokeResponse.data.id}`
+        );
+        // console.log(dexRes.data);
+        setpokeDetails({ pokeInfo: pokeResponse.data, pokeBio: dexRes.data });
+      } catch {
+        console.log("Error");
+      }
+      // console.log(pokeDetails);
+    };
     getDetails();
   }, []);
 
@@ -27,24 +38,30 @@ const DetailPage = (props) => {
   return (
     <div className="poke-card">
       <h1>{route_parameters.pokemon_name}</h1>
-      {/* {console.log(pokeDetails)} */}
-      {pokeDetails ? (
+      {console.log(pokeDetails)}
+      {pokeDetails.pokeInfo ? (
         <div>
+          <p className="p-bio">
+            {pokeDetails.pokeBio.flavor_text_entries[0].flavor_text}
+          </p>
           <img
             alt="Pokemon"
-            src={pokeDetails.sprites.other["official-artwork"].front_default}
+            src={
+              pokeDetails.pokeInfo.sprites.other["official-artwork"]
+                .front_default
+            }
           />
           <p>
             <b>Weight: </b>
-            {pokeDetails.weight} kg
+            {pokeDetails.pokeInfo.weight / 10} kg
           </p>
           <p>
             <b>Height: </b>
-            {pokeDetails.weight} cm
+            {pokeDetails.pokeInfo.height / 10} m
           </p>
           <p>
             <b>Abilities: </b>
-            {pokeDetails.abilities.map((item, index) => (
+            {pokeDetails.pokeInfo.abilities.map((item, index) => (
               <span key={index}> {item.ability.name}</span>
             ))}
           </p>

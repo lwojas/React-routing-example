@@ -1,25 +1,36 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+
+import LogoMain from "../components/LogoMain";
 import PokemonBlock from "../components/PokemonBlock";
 import Filter from "../components/FilterPokemon";
+import ToolTip from "../components/ToolTip";
 
-const backupList = () => {};
+import useCreateUniqueId from "../custom_hooks/CreateId";
+import { stateCache } from "../custom_hooks/StateCache";
 
-const HomePage = () => {
+const HomePage = (props) => {
+  const createId = useCreateUniqueId;
   const [pokeList, setPokeList] = useState(null);
   const [backupList, setBackupList] = useState(null);
+  const [showToolTip, setShowToolTip] = useState(false);
 
   useEffect(() => {
-    async function getPokemons() {
-      const pokeResponse = await axios.get(
-        "https://pokeapi.co/api/v2/pokemon?limit=151"
-      );
-      //   console.log(pokeResponse.data);
-      setPokeList(pokeResponse.data.results);
-      setBackupList(pokeResponse.data.results);
-      // originalList = pokeResponse.data.results;
+    if (!stateCache.homeState) {
+      console.log("Async home api calling");
+      async function getPokemons() {
+        const pokeResponse = await axios.get(
+          "https://pokeapi.co/api/v2/pokemon?limit=151"
+        );
+        stateCache.homeState = pokeResponse.data.results;
+        setPokeList(pokeResponse.data.results);
+        setBackupList(pokeResponse.data.results);
+      }
+      getPokemons();
+    } else {
+      setPokeList([...stateCache.homeState]);
+      setBackupList([...stateCache.homeState]);
     }
-    getPokemons();
   }, []);
 
   const startFilter = (query) => {
@@ -34,16 +45,32 @@ const HomePage = () => {
     }
   };
 
+  const displayToolTip = {
+    On(props) {
+      setShowToolTip(true);
+    },
+    Off(props) {
+      setShowToolTip(false);
+    },
+  };
+
+  // const removeToolTip = (props) => {
+  //   setShowToolTip(false);
+  // };
+
   return (
-    <div>
-      <h1 className="subtitle">Gotta catch 'em all!</h1>
+    <div className="poster-wrapper">
+      <LogoMain />
       <Filter callBack={startFilter} />
       <div className="flex-row poke-list">
         {pokeList ? (
           pokeList.map((pokemon, index) => {
-            //   console.log(pokemon);
             return (
-              <PokemonBlock key={index} name={pokemon.name} url={pokemon.url} />
+              <PokemonBlock
+                key={createId()}
+                name={pokemon.name}
+                url={pokemon.url}
+              />
             );
           })
         ) : (

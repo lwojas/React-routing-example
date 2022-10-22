@@ -1,25 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const Filter = (props) => {
   const [filterPoke, setfilterPoke] = useState("");
-  console.log(props);
-
-  useEffect(() => {
-    props.callBack(filterPoke);
-  }, [filterPoke]);
+  const [onfocus, setOnFocus] = useState(false);
 
   return (
-    <div>
+    <div
+      className={
+        onfocus ? "filter-wrapper filter-wrapper-active" : "filter-wrapper"
+      }
+    >
       <input
+        className="filter-poke"
         type="text"
         placeholder="Name"
         value={filterPoke}
+        onFocus={() => {
+          setOnFocus(true);
+        }}
+        onBlur={() => {
+          setOnFocus(false);
+        }}
         onChange={(event) => {
-          // console.log("new input .value:", event.target.value);
           setfilterPoke(event.target.value);
+          props.callBack(event.target.value);
         }}
       />{" "}
-      Something
+      <div className="search-button">{"\u2315"}</div>
     </div>
   );
 };
