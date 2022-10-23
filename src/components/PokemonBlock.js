@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import { pokeHash } from "../custom_hooks/StateCache";
+import { globalInterface } from "../custom_hooks/Interface";
 
 const drawId = (id) => {
   if (id < 10) {
@@ -16,6 +17,19 @@ const drawId = (id) => {
 
 const PokemonBlock = (props) => {
   const [pokeDetails, setpokeDetails] = useState(null);
+
+  // console.log(props);
+
+  const { Dispatch } = globalInterface;
+
+  const showTip = (event) => {
+    Dispatch("tipOn", event);
+  };
+  const hideTip = (event) => {
+    Dispatch("tipOff", event);
+  };
+
+  const newState = { name: props.name, url: props.url };
 
   useEffect(() => {
     if (!pokeHash[props.name]) {
@@ -37,21 +51,30 @@ const PokemonBlock = (props) => {
       to={{
         pathname: `/detail/${props.name}`,
       }}
-      state={props}
-    >
-      {pokeDetails ? (
-        <img
-          alt="Pokemon"
-          src={pokeDetails.sprites.other["official-artwork"].front_default}
-        />
-      ) : (
-        "Loading image"
-      )}
+      state={newState}
 
-      <div className="card-detail">
-        <h3>
-          #{pokeDetails ? drawId(pokeDetails.id) : ""} {props.name}
-        </h3>
+      // onMouseLeave={props.MouseLeave}
+    >
+      <div
+        className="mouse-stop"
+        customprops="Test for props"
+        onMouseEnter={showTip}
+        onMouseLeave={hideTip}
+      >
+        {pokeDetails ? (
+          <img
+            alt="Pokemon"
+            src={pokeDetails.sprites.other["official-artwork"].front_default}
+          />
+        ) : (
+          "Loading image"
+        )}
+
+        <div className="card-detail">
+          <h3>
+            #{pokeDetails ? drawId(pokeDetails.id) : ""} {props.name}
+          </h3>
+        </div>
       </div>
     </NavLink>
   );

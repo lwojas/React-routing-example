@@ -2,14 +2,17 @@ import { useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+import { globalInterface } from "../custom_hooks/Interface";
+
 const DetailPage = (props) => {
   //   console.log(props );
   const route_parameters = useParams();
   const pokeName = route_parameters.pokemon_name;
+  const { Dispatch } = globalInterface;
 
   let location = useLocation();
   const { state } = location;
-  // console.log(state);
+  console.log(state);
 
   const [pokeDetails, setpokeDetails] = useState({
     pokeInfo: null,
@@ -19,13 +22,14 @@ const DetailPage = (props) => {
   useEffect(() => {
     const getDetails = async () => {
       try {
-        // console.log(state.url);
+        console.log(state.url);
         const pokeResponse = await axios.get(state.url);
         const dexRes = await axios.get(
           `https://pokeapi.co/api/v2/pokemon-species/${pokeResponse.data.id}`
         );
         // console.log(dexRes.data);
         setpokeDetails({ pokeInfo: pokeResponse.data, pokeBio: dexRes.data });
+        Dispatch("tipOff");
       } catch {
         console.log("Error");
       }
@@ -34,7 +38,6 @@ const DetailPage = (props) => {
     getDetails();
   }, []);
 
-  //   console.log(route_parameters);
   return (
     <div className="poke-card">
       <h1>{route_parameters.pokemon_name}</h1>

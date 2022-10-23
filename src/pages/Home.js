@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import LogoMain from "../components/LogoMain";
 import PokemonBlock from "../components/PokemonBlock";
 import Filter from "../components/FilterPokemon";
-import ToolTip from "../components/ToolTip";
+// import ToolTip from "../components/ToolTip";
 
 import useCreateUniqueId from "../custom_hooks/CreateId";
 import { stateCache } from "../custom_hooks/StateCache";
@@ -45,19 +45,6 @@ const HomePage = (props) => {
     }
   };
 
-  const displayToolTip = {
-    On(props) {
-      setShowToolTip(true);
-    },
-    Off(props) {
-      setShowToolTip(false);
-    },
-  };
-
-  // const removeToolTip = (props) => {
-  //   setShowToolTip(false);
-  // };
-
   return (
     <div className="poster-wrapper">
       <LogoMain />
@@ -67,6 +54,7 @@ const HomePage = (props) => {
           pokeList.map((pokemon, index) => {
             return (
               <PokemonBlock
+                // displayTip={displayToolTip}
                 key={createId()}
                 name={pokemon.name}
                 url={pokemon.url}
