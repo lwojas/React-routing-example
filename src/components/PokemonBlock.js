@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import { pokeHash } from "../custom_hooks/StateCache";
-import { globalInterface } from "../custom_hooks/Interface";
+import { Interface } from "../custom_hooks/Interface";
 
 const drawId = (id) => {
   if (id < 10) {
@@ -20,7 +20,7 @@ const PokemonBlock = (props) => {
 
   // console.log(props);
 
-  const { Dispatch } = globalInterface;
+  const { Dispatch } = Interface;
 
   const showTip = (event) => {
     Dispatch("tipOn", event);

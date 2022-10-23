@@ -2,13 +2,13 @@ import { useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import { globalInterface } from "../custom_hooks/Interface";
+import { Interface } from "../custom_hooks/Interface";
 
 const DetailPage = (props) => {
   //   console.log(props );
   const route_parameters = useParams();
-  const pokeName = route_parameters.pokemon_name;
-  const { Dispatch } = globalInterface;
+  // const pokeName = route_parameters.pokemon_name;
+  const { Dispatch } = Interface;
 
   let location = useLocation();
   const { state } = location;

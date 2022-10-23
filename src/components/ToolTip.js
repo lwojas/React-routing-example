@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { globalInterface } from "../custom_hooks/Interface";
+import { Interface } from "../custom_hooks/Interface";
 
 const pos = { x: 100, y: 100 };
 
 const ToolTip = (props) => {
   const [showTip, setShowTip] = useState(false);
 
-  const { actions } = globalInterface;
+  const { actions } = Interface;
 
   const Show = (event) => {
     console.log(event.target.attributes.customprops.nodeValue);

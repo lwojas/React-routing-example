@@ -1,20 +1,23 @@
+// Library imports
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+// Components
 import LogoMain from "../components/LogoMain";
 import PokemonBlock from "../components/PokemonBlock";
 import Filter from "../components/FilterPokemon";
-// import ToolTip from "../components/ToolTip";
 
+// Custom hooks
 import useCreateUniqueId from "../custom_hooks/CreateId";
 import { stateCache } from "../custom_hooks/StateCache";
 
+// Component declaration
 const HomePage = (props) => {
   const createId = useCreateUniqueId;
   const [pokeList, setPokeList] = useState(null);
   const [backupList, setBackupList] = useState(null);
-  const [showToolTip, setShowToolTip] = useState(false);
 
+  // Run useEffect only once by leaving dep array empty
   useEffect(() => {
     if (!stateCache.homeState) {
       console.log("Async home api calling");
@@ -22,17 +25,20 @@ const HomePage = (props) => {
         const pokeResponse = await axios.get(
           "https://pokeapi.co/api/v2/pokemon?limit=151"
         );
+        // Cache the API data on first load
         stateCache.homeState = pokeResponse.data.results;
         setPokeList(pokeResponse.data.results);
         setBackupList(pokeResponse.data.results);
       }
       getPokemons();
     } else {
+      // Retrieve from cache if exists
       setPokeList([...stateCache.homeState]);
       setBackupList([...stateCache.homeState]);
     }
   }, []);
 
+  // Look at making this component
   const startFilter = (query) => {
     if (pokeList) {
       const filterList = backupList.filter((item) => {
@@ -54,7 +60,6 @@ const HomePage = (props) => {
           pokeList.map((pokemon, index) => {
             return (
               <PokemonBlock
-                // displayTip={displayToolTip}
                 key={createId()}
                 name={pokemon.name}
                 url={pokemon.url}
