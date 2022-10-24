@@ -9,4 +9,11 @@ export const Interface = {
   actions: {}, // Only functions can be added to this pool
 };
 
-// export Interface.tip = {};
+export const UIactions = {
+  showTip(event) {
+    Interface.Dispatch("tipOn", event);
+  },
+  hideTip(event) {
+    Interface.Dispatch("tipOff", event);
+  },
+};

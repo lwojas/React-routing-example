@@ -23,7 +23,7 @@ const HomePage = (props) => {
       console.log("Async home api calling");
       async function getPokemons() {
         const pokeResponse = await axios.get(
-          "https://pokeapi.co/api/v2/pokemon?limit=151"
+          "https://pokeapi.co/api/v2/pokemon?limit=300"
         );
         // Cache the API data on first load
         stateCache.homeState = pokeResponse.data.results;

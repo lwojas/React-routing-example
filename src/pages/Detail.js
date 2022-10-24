@@ -6,29 +6,68 @@ import { Interface } from "../custom_hooks/Interface";
 
 const DetailPage = (props) => {
   //   console.log(props );
-  const route_parameters = useParams();
-  // const pokeName = route_parameters.pokemon_name;
+  const route_parameters = useParams(); // Used for dynamic routing
+
   const { Dispatch } = Interface;
 
   let location = useLocation();
   const { state } = location;
-  console.log(state);
+  // console.log(state);
+
+  let abilities = [];
+
+  // const [abilityInfo, setAbilityInfo] = useState(null);
 
   const [pokeDetails, setpokeDetails] = useState({
     pokeInfo: null,
     pokeBio: "Poke bio",
+    pokeAbilities: null,
   });
 
+  // const getAbility = async (item) => {
+  //   const res = await axios.get(item.ability.url);
+  //   // const result = res.data
+  //   console.log(res.data);
+  //   return res.data;
+  // };
+
   useEffect(() => {
+    window.scrollTo(0, 0); // Scroll window to top on entry
     const getDetails = async () => {
       try {
-        console.log(state.url);
+        // console.log(state.url);
         const pokeResponse = await axios.get(state.url);
         const dexRes = await axios.get(
           `https://pokeapi.co/api/v2/pokemon-species/${pokeResponse.data.id}`
         );
-        // console.log(dexRes.data);
-        setpokeDetails({ pokeInfo: pokeResponse.data, pokeBio: dexRes.data });
+
+        // Map abilities
+
+        // pokeResponse.data.abilities.map(async (item, key) => {
+        //   const res = await axios.get(item.ability.url);
+        //   abilities[key] = res.data;
+        //   if (abilities.length === pokeResponse.data.abilities.length) {
+        //     setpokeDetails({
+        //       pokeInfo: pokeResponse.data,
+        //       pokeBio: dexRes.data,
+        //       pokeAbilities: abilities,
+        //     });
+        //   }
+        // });
+
+        for (let i = 0; i < pokeResponse.data.abilities.length; i++) {
+          let res = await axios.get(pokeResponse.data.abilities[i].ability.url);
+          abilities[i] = res.data;
+          if (abilities.length === pokeResponse.data.abilities.length) {
+            setpokeDetails({
+              pokeInfo: pokeResponse.data,
+              pokeBio: dexRes.data,
+              pokeAbilities: abilities,
+            });
+          }
+        }
+        // console.log(abilities[0].effect_entries[1].short_effect);
+
         Dispatch("tipOff");
       } catch {
         console.log("Error");
@@ -40,13 +79,19 @@ const DetailPage = (props) => {
 
   return (
     <div className="poke-card">
-      <h1>{route_parameters.pokemon_name}</h1>
-      {console.log(pokeDetails)}
+      {/* {console.log(pokeDetails)} */}
       {pokeDetails.pokeInfo ? (
         <div>
-          <p className="p-bio">
-            {pokeDetails.pokeBio.flavor_text_entries[0].flavor_text}
-          </p>
+          <div className="flex-row poke-card-header">
+            <h1>{route_parameters.pokemon_name}</h1>
+            <h3>
+              HP{" "}
+              <span className="h3-large">
+                {pokeDetails.pokeInfo.stats[0].base_stat}
+              </span>
+            </h3>
+          </div>
+
           <img
             alt="Pokemon"
             src={
@@ -54,19 +99,35 @@ const DetailPage = (props) => {
                 .front_default
             }
           />
-          <p>
-            <b>Weight: </b>
-            {pokeDetails.pokeInfo.weight / 10} kg
-          </p>
-          <p>
-            <b>Height: </b>
-            {pokeDetails.pokeInfo.height / 10} m
-          </p>
-          <p>
-            <b>Abilities: </b>
+          <div className="flex-row margin-center poke-card-vitals">
+            <p>
+              <b>Weight: </b>
+              {pokeDetails.pokeInfo.weight / 10} kg,
+            </p>
+            <p>
+              <b>Height: </b>
+              {pokeDetails.pokeInfo.height / 10} m
+            </p>
+          </div>
+          <div className="poke-ability">
             {pokeDetails.pokeInfo.abilities.map((item, index) => (
-              <span key={index}> {item.ability.name}</span>
+              <div key={index} className="flex-row">
+                <p>
+                  {" "}
+                  {item.ability.name}{" "}
+                  <span>
+                    {console.log(pokeDetails.pokeInfo)}
+                    {pokeDetails.pokeAbilities
+                      ? pokeDetails.pokeAbilities[index].effect_entries[1]
+                          .short_effect
+                      : ""}
+                  </span>
+                </p>
+              </div>
             ))}
+          </div>
+          <p className="p-bio">
+            {pokeDetails.pokeBio.flavor_text_entries[1].flavor_text}
           </p>
         </div>
       ) : (

@@ -26,10 +26,19 @@ input:focus {
   /* border: 2px solid #b00814; */
 }
 
+.margin-center {
+  margin: auto;
+  width: fit-content;
+}
+
 .poster-wrapper {
   border: 0.5rem solid #a40505;
   padding: 2%;
   position: relative;
+}
+
+.margin-bottom-small {
+  margin-bottom: 2rem;
 }
 
 .tool-tip {
@@ -107,6 +116,23 @@ nav a:active {
   /* text-decoration: underline; */
 }
 
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 1.5rem;
+  margin: auto;
+}
+
+/* Logo Main */
+h1.subtitle {
+  margin-bottom: clamp(1rem, 5vw, 2rem);
+}
+
+/* ----------------------------
+-------- Poke card ------------
+------------------------------- */
+
 .poke-card {
   max-width: 600px;
   margin: auto;
@@ -119,24 +145,33 @@ nav a:active {
     rgba(44, 96, 219, 1) 100%
   );
   border-radius: 3rem;
-}
-
-h1.subtitle {
-  margin-bottom: clamp(1rem, 5vw, 2rem);
-}
-
-.poke-card {
-  padding: 0 2rem 2rem;
+  padding: 0.5rem 2rem 2rem;
 }
 
 .poke-card h1 {
-  font-size: clamp(1rem, 10vw, 4rem);
+  font-size: clamp(1rem, 10vw, 3rem);
   color: #fff;
-  padding: 0.5em;
+  text-transform: capitalize;
+  /* padding: 0.5em; */
+}
+
+.poke-card-header {
+  align-items: baseline;
+}
+
+.poke-card h3 {
+  text-align: right;
+  margin-left: auto;
+  color: #fff;
+}
+
+.poke-card .h3-large {
+  font-size: 2em;
 }
 
 .poke-card img {
   width: 80%;
+  /* background-color: #3575eb; */
 }
 
 .poke-card p {
@@ -145,18 +180,54 @@ h1.subtitle {
   color: #fff;
 }
 
-.poke-card span {
-  display: list-item;
-  list-style-position: inside;
+.poke-card-vitals {
+  background-color: #f9d108;
+  padding: 0.3em 0.5em;
+  font-style: italic;
 }
 
-.flex-row {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  gap: 1.5rem;
-  margin: auto;
+.poke-card-vitals p {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+  color: #1f1f1f;
 }
+
+/* ----------------------------
+-------- Card Ability ------------
+------------------------------- */
+
+.poke-ability > div {
+  border-bottom: 2px solid #fdfdfd;
+}
+
+.poke-ability .flex-row > * {
+  flex: 1 1 0;
+}
+
+.poke-ability p {
+  padding: 1em 0;
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: 0;
+  text-transform: capitalize;
+  line-height: 1.5rem;
+}
+
+.poke-ability span {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+p.p-bio {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* ----------------------------
+-------- Filter ------------
+------------------------------- */
 
 .filter-wrapper {
   display: flex;
@@ -190,10 +261,6 @@ h1.subtitle {
   /* border-radius: 4rem; */
 }
 
-/* .search-button > * {
-  font-size: 2em;
-} */
-
 .filter-poke {
   padding: 1em;
   font-size: 1.2rem;
@@ -207,6 +274,10 @@ h1.subtitle {
   transform: rotate(110deg);
   display: inline-block;
 }
+
+/* ----------------------------
+-------- Poke List ------------
+------------------------------- */
 
 .poke-list .flex-child {
   max-width: 30vw;
@@ -241,4 +312,27 @@ h1.subtitle {
 .poke-list h3 {
   font-size: clamp(0.8rem, 2vw, 1.2rem);
   text-transform: uppercase;
+}
+
+/* ----------------------------
+-------- About block ------------
+------------------------------- */
+
+.about-block {
+  max-width: 80vw;
+  margin: auto;
+  font-size: 1.5em;
+}
+
+.about-block h1 {
+  margin-bottom: 2rem;
+}
+
+.about-block p {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.about-block .flex-row > * {
+  flex: 1 1 0;
 }
