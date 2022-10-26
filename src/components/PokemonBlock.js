@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, MemoryRouter } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -39,37 +39,39 @@ const PokemonBlock = (props) => {
   }, []);
 
   return (
-    <NavLink
-      className="flex-child"
-      to={{
-        pathname: `/detail/${props.name}`,
-      }}
-      state={newState}
+    <MemoryRouter>
+      <NavLink
+        className="flex-child"
+        to={{
+          pathname: `/detail/${props.name}`,
+        }}
+        state={newState}
 
-      // onMouseLeave={props.MouseLeave}
-    >
-      <div
-        className="mouse-stop"
-        customprops="Test for props"
-        onMouseEnter={showTip}
-        onMouseLeave={hideTip}
+        // onMouseLeave={props.MouseLeave}
       >
-        {pokeDetails ? (
-          <img
-            alt="Pokemon"
-            src={pokeDetails.sprites.other["official-artwork"].front_default}
-          />
-        ) : (
-          "Loading image"
-        )}
+        <div
+          className="mouse-stop"
+          customprops="Test for props"
+          onMouseEnter={showTip}
+          onMouseLeave={hideTip}
+        >
+          {pokeDetails ? (
+            <img
+              alt="Pokemon"
+              src={pokeDetails.sprites.other["official-artwork"].front_default}
+            />
+          ) : (
+            "Loading image"
+          )}
 
-        <div className="card-detail">
-          <h3>
-            #{pokeDetails ? drawId(pokeDetails.id) : ""} {props.name}
-          </h3>
+          <div className="card-detail">
+            <h3>
+              #{pokeDetails ? drawId(pokeDetails.id) : ""} {props.name}
+            </h3>
+          </div>
         </div>
-      </div>
-    </NavLink>
+      </NavLink>
+    </MemoryRouter>
   );
 };
 
